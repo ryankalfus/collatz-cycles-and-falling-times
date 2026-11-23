@@ -1,0 +1,439 @@
+\documentclass[11pt]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{theoremE}{Theorem E}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\vt}{v_2}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\Om}{\Omega}
+
+\title[Collatz cycles and local minima]{Collatz cycles have more than $A\log K$ local minima}
+\author{Ryan Kalfus}
+\date{23 November 2026 (version 3)}
+
+\begin{document}
+
+\begin{abstract}
+Let a cycle of the Collatz map have $K$ odd elements and $m$ local minima. We show that for
+every constant $A$, all but finitely many cycles satisfy $m > A\log K$. This extends,
+ineffectively, a theorem of Brox (constant $2$) and the bound implicit in the work of Simons
+and de Weger (constant $1/\log\log_2 3 \approx 2.17$). The proof applies Evertse's theorem on
+sums of $S$-units to windows of consecutive rises of an orbit. The result holds equally for
+$3x+d$, so it cannot exclude cycles.
+\end{abstract}
+
+\maketitle
+
+\section*{Status and provenance}
+
+The mathematics in this note was found, written and checked by AI agents (Anthropic's
+Claude) run by the author. It has passed a blind re-derivation and a hostile review, both
+carried out by AI agents; the reports are in the accompanying repository. \emph{No human
+mathematician has reviewed it.} The claim that the result is new rests on literature
+searches that could not open the papers of Brox \cite{Brox} and Luca \cite{Luca} in full.
+Corrections, and pointers to earlier work, are welcome.
+
+\section{Statements}
+
+Throughout, $T(x)=x/2$ for even $x$ and $T(x)=(3x+1)/2$ for odd $x$, on the positive
+integers. We write $\vt(n)$ for the exponent of $2$ in $n$, and
+$\delta=\log_2 3=1.58496\ldots$, so that $1/\ln\delta = 2.1712\ldots$.
+
+\subsection*{Blocks}
+For an odd integer $x\ge 1$ define
+\begin{gather*}
+k(x)=\vt(x+1)\ge 1,\qquad s(x)=\frac{x+1}{2^{k(x)}}\ \text{(an odd integer)},\\
+l(x)=\vt\bigl(3^{k(x)}s(x)-1\bigr)\ge 1,\qquad
+\N(x)=\frac{3^{k(x)}s(x)-1}{2^{l(x)}}\ \text{(an odd integer)}.
+\end{gather*}
+By Lemma~\ref{lem:block}, the orbit of $x$ consists of $k(x)$ odd elements (a \emph{rise}),
+then $l(x)$ even elements (a \emph{fall}), and then reaches the odd number $\N(x)$.
+
+\subsection*{Windows}
+For odd $x_0$ and $r\ge 1$ put $x_j=\N^j(x_0)$, $k_j=k(x_j)$, $s_j=s(x_j)$ and $l_j=l(x_j)$.
+The \emph{window of $r$ blocks at $x_0$} consists of the first $r$ rises and the $r-1$ falls
+between them. Its length is
+\[
+J_r(x_0)=k_0+l_0+k_1+l_1+\dots+l_{r-2}+k_{r-1}.
+\]
+
+\begin{theorem}[Windows]\label{thm:window}
+For every integer $r\ge 1$ and every $\varepsilon>0$ there is a constant $C(r,\varepsilon)$
+such that for every odd $x_0\ge 1$
+\[
+J_r(x_0)\le (1+\varepsilon)\log_2(x_0+1)+C(r,\varepsilon).
+\]
+\end{theorem}
+
+For $r=1$ this is the trivial bound $k_0\le\log_2(x_0+1)$, with $C=0$. For $r\ge 2$ the
+constant is ineffective.
+
+\subsection*{Cycles}
+Let $\Om$ be a cycle of $T$ in the positive integers, with $K$ odd and $L$ even elements. An
+odd element of $\Om$ is a \emph{block start} if its predecessor in $\Om$ is even. Let $m$ be
+the number of block starts. This is the number of local minima of the cycle, the $m$ of
+``$m$-cycles'' in \cite{SdW}.
+
+\begin{theorem}[Cycles]\label{thm:cycles}
+For every integer $r\ge 1$ and every $\varepsilon>0$ there is $K_0(r,\varepsilon)$ such that
+every cycle with $K\ge K_0(r,\varepsilon)$ satisfies
+\[
+m\ \ge\ (1-\varepsilon)\,\frac{r}{\ln\delta}\,\ln K .
+\]
+\end{theorem}
+
+\begin{corollary}\label{cor:main}
+For every real $A$, only finitely many cycles of $T$ have $m\le A\ln K$.
+\end{corollary}
+
+\subsection*{Relation to known results}
+Corollary~\ref{cor:main} is Brox's theorem with his constant $2$ replaced by an arbitrary
+$A$: Brox \cite{Brox} showed that only finitely many cycles have $m<2\log K$, by a method
+that is effective in principle. Luca \cite{Luca} proved that every cycle has at least
+$C_1\log n$ ascents for an absolute constant $C_1$. For $r=1$, Theorem~\ref{thm:cycles} is
+effective and known: Simons and de Weger prove $K<15.108\,m\,\delta^m$ for
+$m\ge 527\,875\,035$ \cite[Theorem~3(d) of the 2010 version]{SdW}, and Hercher's proof that
+$m\ge 92$ \cite{Hercher} rests on the same once-per-block growth bound.
+Theorem~\ref{thm:cycles} for a larger $r$ implies it for a smaller one, so its content is the
+Corollary: the constant can be taken arbitrarily large, at the price of effectivity.
+
+We did not have access to \cite{Brox} and \cite{Luca} in full. Their statements above are
+quoted from \cite{SdW} and from Lagarias's annotated bibliography \cite{Lagarias}.
+
+\section{Elementary lemmas}
+
+\begin{lemma}[One block]\label{lem:block}
+Let $x$ be odd, $k=k(x)$, $s=s(x)$, $l=l(x)$. Then $T^j(x)=3^j2^{k-j}s-1$ for $0\le j\le k$.
+These are odd for $j<k$, and $T^k(x)=3^ks-1$ is even. The next $l-1$ iterates are even and
+$T^{k+l}(x)=\N(x)$ is odd. With $y=x+1$ and $y'=\N(x)+1$,
+\begin{equation}\label{eq:block}
+2^{k+l}\,y' = 3^k\,y + 2^{k+l}-2^k .
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For odd $z$ we have $T(z)+1=\tfrac32(z+1)$. By induction on $j$,
+$T^j(x)+1=3^j2^{k-j}s$ as long as the earlier iterates are odd, and $3^j2^{k-j}s-1$ is odd
+exactly when $j<k$. At $j=k$ the value $3^ks-1$ is even and at least $2$, and halving it $l$
+times gives $\N(x)$. Finally $2^l(y'-1)=3^ks-1=3^ky/2^k-1$; multiply by $2^k$.
+\end{proof}
+
+\begin{lemma}[Window identity]\label{lem:identity}
+Let $r\ge 2$ and take a window at $x_0$ with data $k_j,l_j,s_j$. Put
+\[
+D_j=\sum_{i<j}(k_i+l_i)\quad(0\le j\le r-1),\qquad
+E_j=\sum_{i=j}^{r-2}k_i\quad(0\le j\le r-1,\ E_{r-1}=0),
+\]
+and $J=J_r(x_0)=D_{r-1}+k_{r-1}$. Define the $2r$ integers
+\begin{gather*}
+A=3^{E_0}s_0,\qquad B=-2^{J-k_0}s_{r-1},\\
+P_j=3^{E_{j+1}}2^{D_{j+1}-k_0},\qquad
+N_j=-3^{E_{j+1}}2^{D_j+k_j-k_0}\qquad(0\le j\le r-2).
+\end{gather*}
+Then
+\[
+A+\sum_{j=0}^{r-2}(P_j+N_j)+B=0 .
+\]
+\end{lemma}
+
+\begin{proof}
+Write $y_j=x_j+1=2^{k_j}s_j$. Multiply \eqref{eq:block} for block $j$ by
+$3^{E_{j+1}}2^{D_j}$. Since $E_j=E_{j+1}+k_j$ and $D_{j+1}=D_j+k_j+l_j$,
+\[
+3^{E_{j+1}}2^{D_{j+1}}y_{j+1}=3^{E_j}2^{D_j}y_j+3^{E_{j+1}}\bigl(2^{D_{j+1}}-2^{D_j+k_j}\bigr).
+\]
+Summing over $j=0,\dots,r-2$ telescopes to
+\[
+2^{D_{r-1}}y_{r-1}=3^{E_0}y_0+\sum_{j=0}^{r-2}3^{E_{j+1}}\bigl(2^{D_{j+1}}-2^{D_j+k_j}\bigr).
+\]
+Substitute $y_0=2^{k_0}s_0$ and $y_{r-1}=2^{k_{r-1}}s_{r-1}$ and divide by $2^{k_0}$; every
+exponent of $2$ that occurs is at least $k_0$.
+\end{proof}
+
+\begin{lemma}[Valuations]\label{lem:val}
+In Lemma~\ref{lem:identity}:
+\begin{enumerate}
+\item $\vt(A)=\vt(N_0)=0$, and
+$0<\vt(P_0)<\vt(N_1)<\vt(P_1)<\dots<\vt(N_{r-2})<\vt(P_{r-2})<\vt(B)$.
+\item No proper non-empty subfamily of the $2r$ terms has sum zero.
+\item The greatest common divisor of the $2r$ terms is $1$.
+\item $P_j+N_j>0$ for every $j$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(1) $A=3^{E_0}s_0$ is odd and $N_0=-3^{E_1}$. Next $\vt(P_j)=D_{j+1}-k_0$,
+$\vt(N_j)=D_j+k_j-k_0$ and $\vt(B)=J-k_0$, because $s_{r-1}$ is odd. The chain is strict
+because $D_{j+1}=(D_j+k_j)+l_j$ with $l_j\ge 1$, because $D_{j+1}+k_{j+1}>D_{j+1}$, and
+because $J=D_{r-1}+k_{r-1}>D_{r-1}$.
+
+(2) A finite sum of non-zero integers that equals zero attains its minimal $2$-adic
+valuation at least twice. By (1) the only two terms with equal valuation are $A$ and $N_0$,
+so a vanishing subfamily contains both. If a proper non-empty subfamily summed to zero, so
+would its complement, since the total is zero. Both would then contain $A$ and $N_0$, which
+is impossible.
+
+(3) $|N_0|=3^{E_1}$ is a power of $3$ and $P_{r-2}=2^{D_{r-1}-k_0}$ is a power of $2$.
+
+(4) $P_j=2^{l_j}|N_j|$ and $l_j\ge 1$.
+\end{proof}
+
+\section{Evertse's theorem}
+
+\begin{theoremE}[Evertse {\cite[Corollary 1]{Evertse}}]
+Let $c>0$ and $0\le d<1$ be constants, $S_0$ a finite set of primes, and $n$ a positive
+integer. There are only finitely many tuples $(x_0,\dots,x_n)$ of rational integers such
+that
+\begin{enumerate}
+\item[(i)] $x_0+\dots+x_n=0$;
+\item[(ii)] no proper non-empty subsum vanishes;
+\item[(iii)] $\gcd(x_0,\dots,x_n)=1$;
+\item[(iv)] $\displaystyle\prod_{k=0}^n\Bigl(|x_k|\prod_{p\in S_0}|x_k|_p\Bigr)\le
+c\,\bigl(\max_k|x_k|\bigr)^d$.
+\end{enumerate}
+\end{theoremE}
+
+The factor $|x|\prod_{p\in S_0}|x|_p$ is the largest divisor of $|x|$ coprime to $S_0$, its
+\emph{$S_0$-free part}.
+
+\section{Proof of Theorem~\ref{thm:window}}
+
+For $r=1$ we have $x_0+1=2^{k_0}s_0\ge 2^{k_0}$.
+
+Let $r\ge 2$. It suffices to treat $0<\varepsilon\le 1/6$. Apply Theorem~E with
+$S_0=\{2,3\}$, $n+1=2r$, $c=1$ and $d=1-\varepsilon$, and let $\mathcal{E}$ be the resulting
+finite set of tuples. To an odd $x_0$ attach the tuple
+\[
+\tau(x_0)=(A,P_0,N_0,P_1,N_1,\dots,P_{r-2},N_{r-2},B)
+\]
+of Lemma~\ref{lem:identity}. By Lemmas~\ref{lem:identity} and~\ref{lem:val} it satisfies
+(i), (ii) and (iii). Let $M$ be the largest absolute value among its entries and
+$y_0=x_0+1$.
+
+\subsection*{The product of $S_0$-free parts}
+Each $P_j$ and $N_j$ has $S_0$-free part $1$. The $S_0$-free parts of $A$ and $B$ divide
+$s_0$ and $s_{r-1}$. Since $s_0=y_0/2^{k_0}$ and $s_{r-1}=|B|/2^{J-k_0}\le M/2^{J-k_0}$, the
+product $\Pi$ of the $S_0$-free parts satisfies
+\begin{equation}\label{eq:prod}
+\Pi\le s_0\,s_{r-1}\le y_0\,M\,2^{-J}.
+\end{equation}
+
+\subsection*{The size of $M$}
+We have $|A|\le 3^Jy_0$ and $|N_j|\le|P_j|\le 3^J2^J$, and by Lemma~\ref{lem:val}(4),
+$|B|=A+\sum_j(P_j+N_j)\le|A|+\sum_j|P_j|$. Hence
+\begin{equation}\label{eq:M}
+M\le r\,6^J\,y_0 .
+\end{equation}
+
+\subsection*{Case $\tau(x_0)\notin\mathcal{E}$}
+Then (iv) fails: $\Pi>M^{1-\varepsilon}$. With \eqref{eq:prod} this gives
+$2^J<y_0M^{\varepsilon}$, and with \eqref{eq:M}
+\[
+J<\log_2y_0+\varepsilon\bigl(\log_2r+J\log_26+\log_2y_0\bigr).
+\]
+Since $\log_26<2.585$ and $\varepsilon\le 1/6$, we get
+$J(1-2.585\,\varepsilon)<(1+\varepsilon)\log_2y_0+\varepsilon\log_2r$, and therefore
+\[
+J<(1+7\varepsilon)\log_2y_0+\log_2r .
+\]
+
+\subsection*{Case $\tau(x_0)\in\mathcal{E}$}
+Only finitely many $x_0$ occur. Indeed, given the tuple, $A=3^{E_0}s_0\ge 3^{k_0}$ bounds
+$k_0$, and $s_0\le A$, so $y_0=2^{k_0}s_0$ is bounded. Let $C_0$ be the largest value of
+$J_r(x_0)$ over these finitely many $x_0$.
+
+In both cases $J_r(x_0)\le(1+7\varepsilon)\log_2(x_0+1)+\log_2r+C_0$. Replace $\varepsilon$
+by $\varepsilon/7$. \qed
+
+\medskip
+The constant $C_0$ depends on the finite set $\mathcal{E}$, which Theorem~E does not make
+explicit. This is the only ineffective step.
+
+\section{Proof of Theorem~\ref{thm:cycles}}
+
+\begin{lemma}[The minimum is small]\label{lem:min}
+For a cycle $\Om$ with $K$ odd and $L$ even elements put $\Lambda=(K+L)\ln2-K\ln3$. Then
+$0<\Lambda<K/(3\min\Om)$, and $\min\Om<153\,K^{14.3}$.
+\end{lemma}
+
+\begin{proof}
+The product of $T(x)/x$ over $\Om$ is $1$. The factor is $1/2$ at even $x$ and $(3+1/x)/2$
+at odd $x$, so $2^{K+L}=3^K\prod_{x\text{ odd}}(1+1/(3x))$. Taking logarithms,
+$\Lambda=\sum_{x\text{ odd}}\ln(1+1/(3x))$, which lies strictly between $0$ and
+$K/(3\min\Om)$.
+
+For the bound on $\min\Om$ we use Rhin's estimate \cite{Rhin} in the form applied in the
+proof of \cite[Lemma~12]{SdW}: $\Lambda\ge(K+L)^{-13.3}$. The trivial cycle $\{1,2\}$ has
+minimum $1$. Any other cycle has $K\ge 2$. If $\min\Om<40\,000$ the claim holds, because
+$40\,000<153\cdot2^{14.3}$. Otherwise $\Lambda<K/(3\min\Om)$ gives
+\[
+K+L=\delta K+\Lambda/\ln2<(\delta+1.3\cdot10^{-5})K<e^{0.46057}K,
+\]
+so $\Lambda\ge e^{-13.3\cdot0.46057}K^{-13.3}$ and
+$\min\Om<K/(3\Lambda)\le(e^{6.126}/3)K^{14.3}<153\,K^{14.3}$.
+\end{proof}
+
+Simons and de Weger state their Lemma~12 for non-trivial cycles and use the
+computer-verified lower bound on cycle elements; the case split above avoids that input. We
+did not read \cite{Rhin} itself: the estimate is taken from \cite{SdW}. Any polynomial bound
+on $\min\Om$ would do for Theorem~\ref{thm:cycles}.
+
+\begin{lemma}[The minimum starts a block]\label{lem:start}
+The least element $z$ of a cycle is odd, and its predecessor $w$ in the cycle is even.
+\end{lemma}
+
+\begin{proof}
+If $z$ were even, $z/2$ would be a smaller element. If $w$ were odd, $z=(3w+1)/2>w$.
+\end{proof}
+
+\begin{lemma}[Growth over one block]\label{lem:growth}
+For odd $x$, $\log_2(\N(x)+1)\le\log_2(x+1)+(\delta-1)k(x)-l(x)+1$.
+\end{lemma}
+
+\begin{proof}
+$\N(x)+1=(3^ks-1)/2^l+1\le 2\cdot3^ks/2^l$, because $3^ks/2^l>\N(x)\ge 1$. Take logarithms
+and use $\log_2s=\log_2(x+1)-k$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:cycles}]
+Fix $r\ge 1$ and $0<\varepsilon\le 1/2$, and let $C=C(r,\varepsilon)$ be the constant of
+Theorem~\ref{thm:window}. Let $\Om$ be a cycle and let $z_0,\dots,z_{m-1}$ be its block
+starts in cyclic order, with $z_0=\min\Om$ (Lemma~\ref{lem:start}); indices are taken modulo
+$m$ and $z_{i+1}=\N(z_i)$. Every odd element of $\Om$ lies in exactly one rise, so
+$\sum_ik(z_i)=K$. Put $b_i=\log_2(z_i+1)$ and $k_i=k(z_i)$.
+
+\emph{Step 1: growth over at most $r$ blocks.} Let $1\le t\le r$.
+Lemma~\ref{lem:growth} applied $t$ times, then Theorem~\ref{thm:window} for the window at
+$z_i$, give
+\[
+b_{i+t}\le b_i+(\delta-1)(k_i+\dots+k_{i+t-1})+t
+\le b_i+(\delta-1)\bigl((1+\varepsilon)b_i+C\bigr)+r .
+\]
+With $\rho=\delta+(\delta-1)\varepsilon$, $C'=(\delta-1)C+r$ and $u_i=b_i+C'/(\rho-1)$ this
+reads
+\[
+u_{i+t}\le\rho\,u_i\qquad(1\le t\le r).
+\]
+So bit-length grows by a factor of at most $\rho$ over any stretch of at most $r$ blocks.
+By induction, $u_j\le\rho^{\lceil j/r\rceil}u_0$ for all $j\ge 0$.
+
+\emph{Step 2: summing.} Since $k_j\le b_j\le u_j$,
+\[
+K=\sum_{j=0}^{m-1}k_j\le u_0\sum_{j=0}^{m-1}\rho^{\lceil j/r\rceil}
+\le u_0\,r\sum_{q=0}^{\lceil m/r\rceil}\rho^q
+\le\frac{r\rho^2}{\rho-1}\,u_0\,\rho^{m/r}.
+\]
+By Lemma~\ref{lem:min}, $u_0\le\log_2(153K^{14.3}+1)+C'/(\rho-1)\le 14.3\log_2K+c_2$ with
+$c_2=c_2(r,\varepsilon)$. Hence, with $c_1=r\rho^2/(\rho-1)$,
+\[
+\frac mr\,\ln\rho\ \ge\ \ln K-\ln\bigl(14.3\log_2K+c_2\bigr)-\ln c_1 .
+\]
+
+\emph{Step 3: conclusion.} The right side is at least $(1-\varepsilon)\ln K$ once
+$K\ge K_0(r,\varepsilon)$. Also
+$\ln\rho\le\ln\delta+\varepsilon(\delta-1)/\delta\le(1+\varepsilon)\ln\delta$, because
+$(\delta-1)/(\delta\ln\delta)=0.80<1$. So for $K\ge K_0$,
+\[
+m\ \ge\ \frac{1-\varepsilon}{1+\varepsilon}\cdot\frac{r}{\ln\delta}\,\ln K
+\ \ge\ (1-2\varepsilon)\,\frac{r}{\ln\delta}\,\ln K .
+\]
+Replace $\varepsilon$ by $\varepsilon/2$.
+\end{proof}
+
+\begin{proof}[Proof of Corollary~\ref{cor:main}]
+Given $A$, choose $r$ with $r/\ln\delta>2A$ and apply Theorem~\ref{thm:cycles} with
+$\varepsilon=1/2$: every cycle with $K\ge K_0$ has $m>A\ln K$. Cycles with $K<K_0$ are
+finitely many: by Lemma~\ref{lem:min}, $(K+L)\ln2<K\ln3+K/3$, so $K+L<3K$, and a cycle is
+determined by its sequence of $K+L$ parities.
+\end{proof}
+
+\section{Remarks}
+
+\begin{remark}[Ineffectivity]
+$K_0(r,\varepsilon)$ depends on $C(r,\varepsilon)$, hence on Evertse's finite set. No bound
+on the exceptional cycles follows, and the result does not help computations.
+\end{remark}
+
+\begin{remark}[Siblings]
+For $3x+d$ with $d$ fixed, the terms $P_j$ and $N_j$ acquire the factor $d$, the product of
+$S_0$-free parts gains the bounded factor $d^{2r-2}$, the bound of Lemma~\ref{lem:min} gains
+a factor $d$, and the same proof gives the same theorem with constants depending on $d$. For
+$3x-1$ the fixed point $1$, whose rise never ends, has to be excluded. So the theorem cannot
+exclude cycles: $3x-1$ and $3x+5$ have them, and the statement is consistent with all their
+known cycles.
+\end{remark}
+
+\begin{remark}[The control that must fail]
+Over all odd-denominator rationals at once (all $d$ together) there are infinitely many
+cycles with $m=1$, so already the case $r=1$ of Theorem~\ref{thm:cycles} is false there. Two
+steps fail, as they should. Lemma~\ref{lem:min} becomes $\min\Om<153\,d\,K^{14.3}$, which no
+longer bounds the minimum in terms of $K$; this is what breaks $r=1$. For $r\ge 2$,
+Theorem~\ref{thm:window} breaks as well: clearing denominators puts the unbounded factor
+$d^{2r-2}$ into the product of $S_0$-free parts, and condition (iv) of Theorem~E is lost.
+\end{remark}
+
+\begin{remark}[Why this does not reach ``no cycles'']
+Theorem~\ref{thm:window} is uniform in the starting point but not in $r$: the constant
+$C(r,\varepsilon)$ comes from a finite set that depends on $r$. Excluding cycles would need a
+window bound that is uniform in $r$, and nothing here suggests one.
+\end{remark}
+
+\begin{remark}[What is used about $3x+1$]
+Only that the terms other than $A$ and $B$ are pure products of $2$ and $3$, the size bound
+of Lemma~\ref{lem:min}, and Theorem~E.
+\end{remark}
+
+\section{Checks}
+
+The accompanying repository contains a script, \texttt{cycle\_window\_check.py}, that
+verifies Lemma~\ref{lem:identity}, Lemma~\ref{lem:val} (valuations, gcd, and every proper
+subsum for $r\le 4$) and inequality~\eqref{eq:prod} on $8005$ windows with $r$ up to $8$ and
+starting points up to $1000$ bits, including $x_0=1$.
+
+As a test that could have refuted Theorem~\ref{thm:window}, the script samples every odd
+$x<2^{22}$ and structured starts $2^bs-1$ up to $611$ bits. An AI referee then enumerated
+all two-block windows up to $2500$ bits and all three-block windows up to $190$ bits. The
+largest excess $J_r(x_0)-\log_2(x_0+1)$ found is $30.8$ for $r=2$ and $35.4$ for $r=3$, and
+for $r=2$ the ratio of excess to bit length falls from $0.32$ to $0.013$. Growth is
+logarithmic, close to $\log_2\binom{\text{bits}}{2r-1}$. No family with linear excess exists
+in those ranges.
+
+Theorem~E was compared with Corollary~1 of \cite{Evertse} by two agents independently.
+
+\begin{thebibliography}{9}
+
+\bibitem{Brox} T. Brox, \emph{Collatz cycles with few descents}, Acta Arith. \textbf{92}
+(2000), 181--188.
+
+\bibitem{Evertse} J.-H. Evertse, \emph{On sums of $S$-units and linear recurrences},
+Compositio Math. \textbf{53} (1984), 225--244.
+
+\bibitem{Hercher} C. Hercher, \emph{There are no Collatz $m$-cycles with $m\le 91$},
+J. Integer Seq. \textbf{26} (2023), Article 23.3.5.
+
+\bibitem{Lagarias} J. C. Lagarias, \emph{The $3x+1$ problem: an annotated bibliography, II
+(2000--2009)}, arXiv:math/0608208.
+
+\bibitem{Luca} F. Luca, \emph{On the nontrivial cycles in Collatz's problem}, SUT J. Math.
+\textbf{41} (2005), 31--41.
+
+\bibitem{Rhin} G. Rhin, \emph{Approximants de Pad\'e et mesures effectives
+d'irrationalit\'e}, S\'eminaire de Th\'eorie des Nombres, Paris 1985--86, Progr. Math.
+\textbf{71}, Birkh\"auser, 1987, 155--164.
+
+\bibitem{SdW} J. Simons and B. de Weger, \emph{Theoretical and computational bounds for
+$m$-cycles of the $3n+1$ problem}, Acta Arith. \textbf{117} (2005), 51--70; updated version
+1.44 (2010) on the second author's web page.
+
+\end{thebibliography}
+
+\end{document}

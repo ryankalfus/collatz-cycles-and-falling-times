@@ -1,0 +1,13 @@
+Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)
+sha256 261972c76fbf7c80a84b619276f63ded443798cde80d68727d05397d537cbf62  EFSCounterexamples.lean
+'EFS.not_conjecture51' depends on axioms: [propext, Quot.sound]
+'EFS.not_conjecture52' depends on axioms: [propext, Quot.sound]
+'EFS.ftLE_n₀' depends on axioms: [propext, Quot.sound]
+'EFS.sftLE_m₀' depends on axioms: [propext, Quot.sound]
+'EFS.lens_n₀' does not depend on any axioms
+'EFS.lens_m₀' depends on axioms: [propext, Quot.sound]
+'EFS.anchor_ft' depends on axioms: [propext, Quot.sound]
+'EFS.oddPart_spec' depends on axioms: [propext, Classical.choice, Quot.sound]
+real 9.44
+user 8.12
+sys 0.59
